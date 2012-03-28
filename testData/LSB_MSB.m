@@ -3,10 +3,10 @@ clear
 dave = imread('data\daveg01.bmp');
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [32 32]);
-depth = 4;
+depth = 3;
 
 daveOrig = dave;
-seedClone = size(seed);
+seedClone = uint8(size(seed));
 figure;imshow(dave)
 
 % Iterate in increments of 8's because we are doing 8x8 blocks
