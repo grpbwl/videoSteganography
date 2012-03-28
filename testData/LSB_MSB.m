@@ -11,9 +11,15 @@ figure;imshow(dave)
 
 % Iterate in increments of 8's because we are doing 8x8 blocks
 for r=1:8:size(seed,1)
-    for c=1:8:size(seed,2)     
-        % For every block
-        seeded_block = embed(dave(r:(r+7),c:(c+7)),seed(r:(r+7),c:(c+7)),depth);
+    for c=1:8:size(seed,2)
+        % Apply DCT to the block before seeding
+        seeded_block = dct2(dave(r:(r+7),c:(c+7)),seed(r:(r+7),c:(c+7)));
+        
+        % For every block embed part of the image.
+        seeded_block = embed(seeded_block,depth);
+        
+        % Apply I-DCT to the block before applying back to the image
+        seeded_block = idct2(seeded_block);
         
         % Apply seed to image
         dave(r:(r+7),c:(c+7)) = seeded_block;
