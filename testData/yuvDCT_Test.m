@@ -19,11 +19,7 @@ for r=1:8:256
     for w=1:8:256
         
          % Apply 2D DCT
-         mb = dct(scaledImg(r: (r + 7), w:(w+7)));
-         mb = dct(mb')';
-         test = dct2(scaledImg(r: (r + 7), w:(w+7)));
-         
-         %mb(1) = mb(1) + 100;
+         mb = dct2(scaledImg(r: (r + 7), w:(w+7)));
          
 %          mb = abs(round(mb));
          
@@ -38,8 +34,7 @@ for r=1:8:256
          dctDomain(r: (r + 7), w:(w+7)) = mb;
          
          % Attempt to reverse DCT to see effects
-%          inverseDctDomain(r: (r + 7), w:(w+7)) = idct( dctDomain(r: (r + 7), w:(w+7)) );
-         inverseDctDomain(r: (r + 7), w:(w+7)) = ( idct(idct(mb)')' + 128 );
+         inverseDctDomain(r: (r + 7), w:(w+7)) = idct2(mb) + 128;
     end
 end
 inverseDctDomain = imresize(uint8(inverseDctDomain), [288 352]);
