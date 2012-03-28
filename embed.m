@@ -5,6 +5,12 @@ function [ seeded_carrier ] = embed( carrier, seed, depth )
 % TODO: Decide on the bit precision
 bit_precision = 8;
 
+% Pre-process carrier
+integer_carrier = round(carrier);
+
+% This wont work if values are negtive or will it?
+mantissa = carrier - integer_carrier;
+
 % Copying values to seeded carrier
 seeded_carrier = carrier;
 

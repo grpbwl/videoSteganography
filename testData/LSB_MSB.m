@@ -13,10 +13,10 @@ figure;imshow(dave)
 for r=1:8:size(seed,1)
     for c=1:8:size(seed,2)
         % Apply DCT to the block before seeding
-        seeded_block = dct2(dave(r:(r+7),c:(c+7)),seed(r:(r+7),c:(c+7)));
+        seeded_block = single(dct2(dave(r:(r+7),c:(c+7))));
         
         % For every block embed part of the image.
-        seeded_block = embed(seeded_block,depth);
+        seeded_block = embed(seeded_block, seed(r:(r+7),c:(c+7)),depth );
         
         % Apply I-DCT to the block before applying back to the image
         seeded_block = idct2(seeded_block);
