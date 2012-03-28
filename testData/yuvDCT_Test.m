@@ -21,9 +21,11 @@ for r=1:8:256
          % Apply 2D DCT
          mb = dct(scaledImg(r: (r + 7), w:(w+7)));
          mb = dct(mb')';
+         test = dct2(scaledImg(r: (r + 7), w:(w+7)));
+         
          %mb(1) = mb(1) + 100;
          
-         mb = abs(round(mb));
+%          mb = abs(round(mb));
          
          % Zero out DCT high frequencies
 %          c = 0;
