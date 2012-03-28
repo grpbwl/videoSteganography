@@ -3,35 +3,28 @@ clear
 dave = imread('data\daveg01.bmp');
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [32 32]);
-shiftAmount = 3;
+depth = 4;
 
-a = uint8(13);
-s = uint8(10);
+daveOrig = dave;
+seedClone = size(seed);
+figure;imshow(dave)
 
-% Erase the bits at the end, not necessary dummy
-% a = bitshift(a,-shiftAmount);
-% a = bitshift(a,shiftAmount);
-
-% Insert shiftAmount MSB into LSB
-msb = 4;
-for lsb=1:shiftAmount
-    a = bitset(a,lsb,bitget(s,msb));
-    msb = msb - 1;
+% Iterate in increments of 8's because we are doing 8x8 blocks
+for r=1:8:size(seed,1)
+    for c=1:8:size(seed,2)     
+        % For every block
+        seeded_block = embed(dave(r:(r+7),c:(c+7)),seed(r:(r+7),c:(c+7)),depth);
+        
+        % Apply seed to image
+        dave(r:(r+7),c:(c+7)) = seeded_block;
+        
+        % Retrieve
+        seedClone(r:(r+7),c:(c+7)) = extract(seeded_block, depth);
+    end
 end
 
-disp(a)
-disp(s)
+figure;imshow(dave)
+figure;imshow(uint8(daveOrig - dave ))
 
-% figure;imshow(seed)
-
-% for r=1:32
-%     for c=1:32
-%         bit = bitshift(seed(r,c),-shiftAmount);
-%         bit = bitshift(bit,shiftAmount);
-%         seed(r,c) = bit;
-%         seed(r,c)
-%         dec2bin(seed(r,c),8)
-%     end
-% end
-
-% figure;imshow(seed)
+figure;imshow(seed)
+figure;imshow(seedClone)
