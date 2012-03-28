@@ -14,7 +14,7 @@ for r=1:size(seed,1)
         % Perform the actual embedding
         msb = bit_precision; 
         for lsb=1:depth
-            seeded_carrier = bitset(seeded_carrier,lsb,bitget(seed,msb));
+            seeded_carrier(r,c) = bitset(seeded_carrier(r,c),lsb,bitget(seed(r,c),msb));
             msb = msb - 1;
         end
     end
