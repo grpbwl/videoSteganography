@@ -20,21 +20,32 @@ for r=1:size(seed,1)
         
         sc = seeded_carrier(r,c);
         negbit = 0;
-        % Filter out values before starting with the bit embedding
+        
+        % Set negbit
         if sc < 0
             negbit = 1;
             sc = abs(sc);
         end
         
-        
         % Perform the actual embedding
         msb = bit_precision; 
         for lsb=1:depth
-            seeded_carrier(r,c) = bitset(seeded_carrier(r,c),lsb,bitget(seed(r,c),msb));
+            sc = bitset(sc,lsb,bitget(seed(r,c),msb));
             msb = msb - 1;
         end
+        
+        % Unset negbit
+        if negbit
+            sc = -sc;
+        end
+        
+        % Store value back
+        seeded_carrier(r,c) = sc;
     end
 end
+
+% Add the mantissa back
+seeded_carrier = seeded_carrier + mantissa;
 
 % DEBUG: Printing out the binary just to confirm.
 %disp(dec2bin(seeded_carrier,bit_precision))
