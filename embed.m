@@ -17,6 +17,16 @@ seeded_carrier = integer_carrier;
 % Iterate through the elements of the seed matrix
 for r=1:size(seed,1)
     for c=1:size(seed,2)
+        
+        sc = seeded_carrier(r,c);
+        negbit = 0;
+        % Filter out values before starting with the bit embedding
+        if sc < 0
+            negbit = 1;
+            sc = abs(sc);
+        end
+        
+        
         % Perform the actual embedding
         msb = bit_precision; 
         for lsb=1:depth
