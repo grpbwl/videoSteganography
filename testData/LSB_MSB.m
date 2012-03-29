@@ -1,6 +1,7 @@
 clear
 % Reading the information and storing it to get rid of the 4 MSB
-dave = imread('data\daveg01.bmp');
+% dave = imread('data\daveg01.bmp');
+dave = imread('data/daveg01.bmp');
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [32 32]);
 depth = 3;
