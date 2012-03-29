@@ -3,7 +3,7 @@
 dave = imread('data/daveg01.bmp');
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [32 32]);
-depth = 3;
+depth = 2;
 
 figure;imshow(dave)
 
@@ -15,8 +15,17 @@ seedClone = uint8(size(seed));
 for r=1:8:size(seed,1)
     for c=1:8:size(seed,2)
         
+        % Attempt to skip half of the values in the seed.
+        % TODO: This probably goes somewehere else.
+%         if (r + c == 9) % 9 is related to the MB size
+%             continue;
+%         end
+        
         % MacroBlock
-        mb = single(dave(r:(r+7),c:(c+7))) - 128;
+        mb = dave(r:(r+7),c:(c+7)) - 128;
+        
+        % TODO: Consider changing the type to single.
+        % mb = single(mb);
         
         % Apply DCT to the block before seeding
         seeded_block = dct2(mb);

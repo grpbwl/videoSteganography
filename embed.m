@@ -3,7 +3,7 @@ function [ seeded_carrier ] = embed( carrier, seed, depth )
 %   TODO: Detailed explanation goes here
 
 % TODO: Decide on the bit precision
-bit_precision = 4;
+bit_precision = 8;
 
 % Pre-process carrier
 integer_carrier = fix(carrier);
