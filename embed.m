@@ -3,10 +3,10 @@ function [ seeded_carrier ] = embed( carrier, seed, depth )
 %   TODO: Detailed explanation goes here
 
 % TODO: Decide on the bit precision
-bit_precision = 8;
+bit_precision = 4;
 
 % Pre-process carrier
-integer_carrier = int32(fix(carrier));
+integer_carrier = fix(carrier);
 
 % This wont work if values are negtive or will it?
 mantissa = carrier - integer_carrier;
@@ -18,14 +18,18 @@ seeded_carrier = integer_carrier;
 for r=1:size(seed,1)
     for c=1:size(seed,2)
         
+        % Get alias for the current sc position
         sc = seeded_carrier(r,c);
         negbit = 0;
         
-        % Set negbit
+        % Set negbit if negative
         if sc < 0
             negbit = 1;
             sc = abs(sc);
         end
+        
+        % TODO: Cast to correct type.
+        sc = uint32(sc);
         
         % Perform the actual embedding
         msb = bit_precision; 
@@ -34,7 +38,10 @@ for r=1:size(seed,1)
             msb = msb - 1;
         end
         
-        % Unset negbit
+        % TODO: Cast back to original carrier type
+        sc = cast(sc,class(carrier));
+        
+        % Unset negbit if it ever was negative
         if negbit
             sc = -sc;
         end
