@@ -6,13 +6,13 @@ function [ seeded_carrier ] = embed( carrier, seed, depth )
 bit_precision = 8;
 
 % Pre-process carrier
-integer_carrier = fix(carrier);
+integer_carrier = int32(fix(carrier));
 
 % This wont work if values are negtive or will it?
 mantissa = carrier - integer_carrier;
 
 % Copying values to seeded carrier
-seeded_carrier = uint32(integer_carrier);
+seeded_carrier = integer_carrier;
 
 % Iterate through the elements of the seed matrix
 for r=1:size(seed,1)
