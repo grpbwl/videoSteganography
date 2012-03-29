@@ -3,7 +3,7 @@
 dave = imread('data/daveg01.bmp');
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [32 32]);
-depth = 4;
+depth = 8;
 
 % figure;imshow(dave)
 
