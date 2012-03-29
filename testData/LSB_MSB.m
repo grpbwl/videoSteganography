@@ -3,9 +3,9 @@
 dave = imread('data/daveg01.bmp');
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [32 32]);
-depth = 2;
+depth = 8;
 
-figure;imshow(dave)
+% figure;imshow(dave)
 
 daveOrig = dave;
 seedClone = uint8(size(seed));
@@ -22,7 +22,7 @@ for r=1:8:size(seed,1)
 %         end
         
         % MacroBlock
-        mb = dave(r:(r+7),c:(c+7)) - 128;
+        mb = dave(r:(r+7),c:(c+7));% - 128;
         
         % TODO: Consider changing the type to single.
         % mb = single(mb);
@@ -34,7 +34,7 @@ for r=1:8:size(seed,1)
         seeded_block = embed(seeded_block, seed(r:(r+7),c:(c+7)),depth );
         
         % Apply I-DCT to the block before applying back to the image
-        seeded_block = idct2(seeded_block) + 128;
+        seeded_block = idct2(seeded_block);% + 128;
         
         % Apply seed to image
         dave(r:(r+7),c:(c+7)) = seeded_block;
