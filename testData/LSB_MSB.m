@@ -3,7 +3,7 @@
 dave = imread('data/daveg01.bmp');
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [32 32]);
-depth = 8;
+depth = 4;
 
 % figure;imshow(dave)
 
@@ -40,7 +40,7 @@ for r=1:8:size(seed,1)
         dave(r:(r+7),c:(c+7)) = seeded_block;
         
         % Retrieve
-        % seedClone(r:(r+7),c:(c+7)) = extract(seeded_block, depth);
+        seedClone(r:(r+7),c:(c+7)) = extract(dct2(seeded_block), depth);
     end
 end
 
@@ -48,4 +48,4 @@ figure;imshow(uint8(dave))
 % figure;imshow(uint8(daveOrig - dave ))
 
 % figure;imshow(seed)
-% figure;imshow(seedClone)
+figure;imshow(seedClone)

@@ -5,18 +5,21 @@ function [ seed ] = extract( seeded_carrier , depth)
 % TODO: Decide on the bit precision
 bit_precision = 8;
 
+% Pre-process seeded carrier
+int_scarrier = abs(fix(seeded_carrier));
+
 % Initialize seed.
 seed = zeros(size(seeded_carrier));
 
 % Iterate through carrier
-for r=1:size(seeded_carrier,1)
-    for c=1:size(seeded_carrier,2)
+for r=1:size(int_scarrier,1)
+    for c=1:size(int_scarrier,2)     
         
         bitstring = '';
         
         % Extract the bits to a certain depth
         for bit=1:depth
-            bitstring = strcat(bitstring,num2str(bitget(seeded_carrier(r,c),bit)));
+            bitstring = strcat(bitstring,num2str(bitget(int_scarrier(r,c),bit)));
         end
         
         % TODO: Once I test this and it works, I'll compress to one
@@ -30,6 +33,6 @@ for r=1:size(seeded_carrier,1)
 end
 
 % DEBUG: Printing out the binary just to confirm.
-disp(dec2bin(seed,bit_precision))
+% disp(dec2bin(seed,bit_precision))
 end
 
