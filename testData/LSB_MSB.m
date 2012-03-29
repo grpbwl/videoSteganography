@@ -1,10 +1,12 @@
-clear
 % Reading the information and storing it to get rid of the 4 MSB
 % dave = imread('data\daveg01.bmp');
 dave = imread('data/daveg01.bmp');
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [32 32]);
 depth = 3;
+
+% Subtract 128
+dave = dave - 128;
 
 daveOrig = dave;
 seedClone = uint8(size(seed));
@@ -26,7 +28,7 @@ for r=1:8:size(seed,1)
         dave(r:(r+7),c:(c+7)) = seeded_block;
         
         % Retrieve
-        seedClone(r:(r+7),c:(c+7)) = extract(seeded_block, depth);
+        % seedClone(r:(r+7),c:(c+7)) = extract(seeded_block, depth);
     end
 end
 

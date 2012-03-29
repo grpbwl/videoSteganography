@@ -27,5 +27,5 @@ for r=1:size(seed,1)
 end
 
 % DEBUG: Printing out the binary just to confirm.
-disp(dec2bin(seeded_carrier,bit_precision))
+%disp(dec2bin(seeded_carrier,bit_precision))
 end
