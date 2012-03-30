@@ -2,7 +2,7 @@
 % dave = imread('data\daveg01.bmp');
 dave = imread('data/daveg01.bmp');
 dave = imresize( dave , [128 128]);
-seed = imresize( dave , [32 32]);
+seed = imresize( dave , [16 16]);
 depth = 8;
 
 % figure;imshow(dave)
@@ -44,7 +44,7 @@ for r=1:8:size(seed,1)
     end
 end
 
-figure;imshow(uint8(dave))
+% figure;imshow(uint8(dave))
 % figure;imshow(uint8(daveOrig - dave ))
 
 figure;imshow(seed)
