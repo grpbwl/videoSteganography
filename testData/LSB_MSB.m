@@ -8,7 +8,7 @@ depth = 8;
 % figure;imshow(dave)
 
 daveOrig = dave;
-seedClone = uint8(size(seed));
+seedClone = size(seed);
 
 
 % Iterate in increments of 8's because we are doing 8x8 blocks
@@ -47,5 +47,5 @@ end
 figure;imshow(uint8(dave))
 % figure;imshow(uint8(daveOrig - dave ))
 
-% figure;imshow(seed)
-figure;imshow(seedClone)
+figure;imshow(seed)
+figure;imshow(uint8(seedClone))
