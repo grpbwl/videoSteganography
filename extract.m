@@ -6,7 +6,7 @@ function [ seed ] = extract( seeded_carrier , depth)
 bit_precision = 8;
 
 % Pre-process seeded carrier
-int_scarrier = abs(fix(seeded_carrier));
+int_scarrier = uint32(abs(fix(seeded_carrier)));
 
 % Initialize seed.
 seed = zeros(size(seeded_carrier));
