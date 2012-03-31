@@ -25,7 +25,7 @@ end
 
 seeded_carrier = uint32(seeded_carrier);
 
-% Perform embedding
+% Perform embedding in reverse order.
 msb = depth;
 for lsb=1:depth
     seeded_carrier = bitset(seeded_carrier,lsb, bitget(seed,msb));
