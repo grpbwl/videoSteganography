@@ -23,7 +23,7 @@ seed1d = reshape(seed',seedSize*seedSize,1);
 j = 1;
 for i=1:size(seed1d,1)
     % Assuming that the seed is int.
-    currentSeed = dec2bin(seed1d(i))';
+    currentSeed = dec2bin(seed1d(i),8)';
     
     % Itearating from the 1st MSB to the last bit.
     for bit=1:bp:size(currentSeed,1)
