@@ -40,6 +40,7 @@ if negbit
     seeded_carrier = -seeded_carrier;
 end
 
+seeded_carrier = seeded_carrier + mantissa;
 
 % DEBUG: Printing out the binary just to confirm.
 %disp(dec2bin(seeded_carrier,bit_precision))
