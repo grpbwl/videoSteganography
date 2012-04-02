@@ -1,4 +1,7 @@
-for frame=1:15
+% Max frame
+F = 150;
+
+for frame=1:F
     [seed] = loadFileYuv('foreman_qcif.yuv', 176, 144, frame);
     [host]= loadFileYuv('bus_cif.yuv',352, 288, frame);
     carrier(frame)=host;
