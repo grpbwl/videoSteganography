@@ -3,7 +3,7 @@
 dave = imread('data/daveg01.bmp');
 seedSize = 64;
 carrierSize = 128;
-dave = imresize( dave , [128 128]);
+dave = imresize( dave , [carrierSize carrierSize]);
 seed = imresize( dave , [seedSize seedSize]);
 depth = 8;
 bp = 4;
@@ -17,7 +17,7 @@ seedClone = size(seed);
 dctDave = mbdct2(dave,0);
 
 % Convert seed and carrier into a 1D array
-dave1d = reshape(dctDave',128*128,1);
+dave1d = reshape(dctDave',carrierSize*carrierSize,1);
 seed1d = reshape(seed',seedSize*seedSize,1);
 output = size(seed1d); output = uint8(output);
 
@@ -43,7 +43,7 @@ for i=1:size(seed1d,1)
 end
 
 % Convert carrier back to 2D
-seeded_dave = reshape(dave1d,128,128)';
+seeded_dave = reshape(dave1d,carrierSize,carrierSize)';
 
 % Testing Inverse DCT
 dctTest = seeded_dave;
@@ -59,7 +59,7 @@ figure;imshow(uint8(seeded_dave));
 % Convert seed and carrier into a 1D array
 dctDave = mbdct2(seeded_dave,0);
 
-dave1d = reshape(dctDave',128*128,1);
+dave1d = reshape(dctDave',carrierSize*carrierSize,1);
 output = zeros(size(seed1d)); output = uint8(output);
 j = 1;
 for i=1:size(output,1)
