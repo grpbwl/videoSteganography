@@ -2,6 +2,7 @@
 % dave = imread('data\daveg01.bmp');
 dave = imread('data/daveg01.bmp');
 seedSize = 64;
+carrierSize = 128;
 dave = imresize( dave , [128 128]);
 seed = imresize( dave , [seedSize seedSize]);
 depth = 8;
