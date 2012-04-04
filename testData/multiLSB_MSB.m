@@ -4,10 +4,10 @@
 qcif = [ 176 144 ] ;
 cif = [ 352 288 ];
 
-F = 1;
+F = 3;
 
 % Pre-allocating
-seeded_sequence = repmat(struct('cdata',zeros(cif(2),cif(1),3),'colormap',cell(1)),1,F);
+seeded_sequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,F);
 
 for frame=1:F
     %% Read the Image and scale to proper dimensions
@@ -70,11 +70,14 @@ for frame=1:F
 
     % Apply IDCT to dave
     seeded_carrier = uint8(mbdct2(seeded_carrier,1));
+    seeded_carrier = im2uint8(ind2rgb(seeded_carrier,gray(256)));
+    
     
     % Add to the sequence 
-    seeded_sequence(frame).cdata(:,:,1) = seeded_carrier;
-    seeded_sequence(frame).cdata(:,:,2) = seeded_carrier;
-    seeded_sequence(frame).cdata(:,:,3) = seeded_carrier;
+    seeded_sequence(frame).cdata = seeded_carrier;
+%     seeded_sequence(frame).cdata(:,:,1) = seeded_carrier;
+%     seeded_sequence(frame).cdata(:,:,2) = seeded_carrier;
+%     seeded_sequence(frame).cdata(:,:,3) = seeded_carrier;
 end
 
 % Save the sequence
