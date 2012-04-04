@@ -1,15 +1,19 @@
 % Reading the information and storing it to get rid of the 4 MSB
 % dave = imread('data\daveg01.bmp');
+
+%% Read the Image and scale to proper dimensions
 dave = imread('data/daveg01.bmp');
-seedSize = 64;
-carrierSize = 128;
-dave = imresize( dave , [carrierSize carrierSize]);
-seed = imresize( dave , [seedSize seedSize]);
+qcif = [ 176 144 ] ;
+cif = [ 352 288 ];
+dave = imresize( dave , [cif(1) cif(2)]);
+seed = imresize( dave , [qcif(1) qcif(2)]);
+
+%% Parameters for .... something or another. 
 depth = 8;
 bp = 4;
+key = randi([0 1], cif(1)*cif(2),1);
 
-% figure;imshow(dave)
-
+%% Embed Seed
 daveOrig = dave;
 seedClone = size(seed);
 
@@ -17,8 +21,8 @@ seedClone = size(seed);
 dctDave = mbdct2(dave,0);
 
 % Convert seed and carrier into a 1D array
-dave1d = reshape(dctDave',carrierSize*carrierSize,1);
-seed1d = reshape(seed',seedSize*seedSize,1);
+dave1d = reshape(dctDave',cif(1)*cif(2),1);
+seed1d = reshape(seed',qcif(1)*qcif(2),1);
 output = size(seed1d); output = uint8(output);
 
 % Iterate through the seed array
@@ -43,7 +47,7 @@ for i=1:size(seed1d,1)
 end
 
 % Convert carrier back to 2D
-seeded_dave = reshape(dave1d,carrierSize,carrierSize)';
+seeded_dave = reshape(dave1d,cif(1),cif(2))';
 
 % Testing Inverse DCT
 dctTest = seeded_dave;
@@ -51,15 +55,11 @@ dctTest = seeded_dave;
 % Apply IDCT to dave
 seeded_dave = mbdct2(seeded_dave,1);
 
-figure;imshow(uint8(seeded_dave));
-
-
-% Retrieve seed
-
+%% Retrieve Seed
 % Convert seed and carrier into a 1D array
 dctDave = mbdct2(seeded_dave,0);
 
-dave1d = reshape(dctDave',carrierSize*carrierSize,1);
+dave1d = reshape(dctDave',cif(1)*cif(2),1);
 output = zeros(size(seed1d)); output = uint8(output);
 j = 1;
 for i=1:size(output,1)
@@ -81,10 +81,4 @@ for i=1:size(output,1)
 end
 
 % Resize output
-output = reshape(output,seedSize,seedSize)';
-
-% figure;imshow(uint8(dave))
-% figure;imshow(uint8(daveOrig - dave ))
-
-% figure;imshow(seed)
-% figure;imshow(uint8(seedClone))
+output = reshape(output,qcif(1),qcif(2))';
