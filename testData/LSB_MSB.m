@@ -27,7 +27,16 @@ output = size(seed1d); output = uint8(output);
 
 % Iterate through the seed array
 j = 1;
-for i=1:size(seed1d,1)
+for i=1:2:size(dave1d,1)
+    
+    currentSeed = '';
+    
+    % If the key is set then we encode the next value here.
+    if( key(i) == 1 )
+        currentSeed = dec2bin(seed1d(j),8)';
+        dave1d(i) = embed(dave1d(i),bin2dec(currentSeed(1:4)'), bp );
+        j = j + 1;
+    end
     % Assuming that the seed is int.
     currentSeed = dec2bin(seed1d(i),8)';
     
