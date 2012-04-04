@@ -25,6 +25,11 @@ dave1d = reshape(dctDave',cif(1)*cif(2),1);
 seed1d = reshape(seed',qcif(1)*qcif(2),1);
 output = size(seed1d); output = uint8(output);
 
+% Convert seed to binary and split it up
+binarySeed = dec2bin(seed1d,8);
+seedMSB = binarySeed(:,1:4);
+seedLSB = binarySeed(:,5,8);
+
 % Iterate through the seed array
 j = 1;
 for i=1:2:size(dave1d,1)
@@ -33,25 +38,9 @@ for i=1:2:size(dave1d,1)
     
     % If the key is set then we encode the next value here.
     if( key(i) == 1 )
-        currentSeed = dec2bin(seed1d(j),8)';
         dave1d(i) = embed(dave1d(i),bin2dec(currentSeed(1:4)'), bp );
         j = j + 1;
     end
-    % Assuming that the seed is int.
-    currentSeed = dec2bin(seed1d(i),8)';
-    
-    % Itearating from the 1st MSB to the last bit.
-    for bit=1:bp:size(currentSeed,1)
-        
-        % Plant the seed
-        seeded_carrier = embed(dave1d(j),bin2dec(currentSeed(1:bp)'),bp);
-        dave1d(j) = seeded_carrier;
-        
-        % Truncate currentSeed
-        currentSeed = currentSeed(bp+1:size(currentSeed,1));
-        
-        % Increase counter for carrier's index
-        j = j + 1;
     end 
 end
 
