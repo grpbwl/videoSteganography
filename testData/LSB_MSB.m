@@ -23,14 +23,13 @@ dctDave = mbdct2(dave,0);
 % Convert seed and carrier into a 1D array
 dave1d = reshape(dctDave',cif(1)*cif(2),1);
 seed1d = reshape(seed',qcif(1)*qcif(2),1);
-output = size(seed1d); output = uint8(output);
 
 % Convert seed to binary and split it up
 binarySeed = dec2bin(seed1d,8);
 seedMSB = binarySeed(:,1:4);
 seedLSB = binarySeed(:,5:8);
 
-% Iterate through the carrier array
+%% Iterate through the carrier array
 msb = 1; lsb = 1;
 for i=1:size(dave1d,1)  
     % If the key is set then we encode the next value here.
@@ -57,17 +56,17 @@ end
 % Convert carrier back to 2D
 seeded_dave = reshape(dave1d,cif(2),cif(1))';
 
-% Testing Inverse DCT
-dctTest = seeded_dave;
-
 % Apply IDCT to dave
 seeded_dave = mbdct2(seeded_dave,1);
+
 
 %% Retrieve Seed
 % Convert seed and carrier into a 1D array
 dctDave = mbdct2(seeded_dave,0);
 
 dave1d = reshape(dctDave',cif(1)*cif(2),1);
+% outputMSB = zeros(qcif(1)*qcif(2)/2
+
 output = zeros(size(seed1d)); output = uint8(output);
 msb = 1;
 for i=1:size(output,1)
