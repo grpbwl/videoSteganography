@@ -47,11 +47,15 @@ for i=1:size(dave1d,1)
         
         % Embed the corresponding part of the seed in here.
         dave1d(i) = embed(dave1d(i),currentSeed, bp );
+        
+        if lsb > size(seedLSB,1)
+            break;
+        end
     end
 end
 
 % Convert carrier back to 2D
-seeded_dave = reshape(dave1d,cif(1),cif(2))';
+seeded_dave = reshape(dave1d,cif(2),cif(1))';
 
 % Testing Inverse DCT
 dctTest = seeded_dave;
