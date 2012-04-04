@@ -30,18 +30,23 @@ binarySeed = dec2bin(seed1d,8);
 seedMSB = binarySeed(:,1:4);
 seedLSB = binarySeed(:,5,8);
 
-% Iterate through the seed array
-j = 1;
-for i=1:2:size(dave1d,1)
-    
-    currentSeed = '';
-    
+% Iterate through the carrier array
+msb = 1; lsb = 1;
+for i=1:size(dave1d,1)  
     % If the key is set then we encode the next value here.
     if( key(i) == 1 )
-        dave1d(i) = embed(dave1d(i),bin2dec(currentSeed(1:4)'), bp );
-        j = j + 1;
+        
+        % Check which is next msb or lsb, give msb preferrence
+        if msb <= lsb
+            currentSeed = bin2dec(seedMSB(msb,:));
+            msb = msb + 1;
+        else
+            currentSeed = bin2dec(seedLSB(lsb,:));
+        end
+        
+        % Embed the corresponding part of the seed in here.
+        dave1d(i) = embed(dave1d(i),currentSeed, bp );
     end
-    end 
 end
 
 % Convert carrier back to 2D
@@ -59,18 +64,18 @@ dctDave = mbdct2(seeded_dave,0);
 
 dave1d = reshape(dctDave',cif(1)*cif(2),1);
 output = zeros(size(seed1d)); output = uint8(output);
-j = 1;
+msb = 1;
 for i=1:size(output,1)
     valuesPerValue = 8/bp;
     bitstring = '';
     
     for b=1:valuesPerValue
-        value = dave1d(j);
+        value = dave1d(msb);
         %Extract one set of bits
         val = extract(value,bp);
         bitstring = cat(2, bitstring,dec2bin(val,bp));
         
-        j = j + 1;
+        msb = msb + 1;
     end
     
     % Store back and do some padding
