@@ -26,10 +26,8 @@ end
 seeded_carrier = uint32(seeded_carrier);
 
 % Perform embedding in correct order.
-msb = depth;
 for lsb=1:depth
     seeded_carrier = bitset(seeded_carrier,lsb, bitget(seed,lsb));
-    msb = msb - 1;
 end
 
 % Casting back to originating class.
