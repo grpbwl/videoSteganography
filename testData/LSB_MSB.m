@@ -29,7 +29,7 @@ binarySeed = dec2bin(seed1d,8);
 seedMSB = binarySeed(:,1:4);
 seedLSB = binarySeed(:,5:8);
 
-%% Iterate through the carrier array
+% Iterate through the carrier array
 msb = 1; lsb = 1;
 for i=1:size(dave1d,1)  
     % If the key is set then we encode the next value here.
@@ -63,29 +63,36 @@ seeded_dave = mbdct2(seeded_dave,1);
 %% Retrieve Seed
 % Convert seed and carrier into a 1D array
 dctDave = mbdct2(seeded_dave,0);
-
 dave1d = reshape(dctDave',cif(1)*cif(2),1);
-% outputMSB = zeros(qcif(1)*qcif(2)/2
 
-output = zeros(size(seed1d)); output = uint8(output);
-msb = 1;
-for i=1:size(output,1)
-    valuesPerValue = 8/bp;
-    bitstring = '';
-    
-    for b=1:valuesPerValue
-        value = dave1d(msb);
-        %Extract one set of bits
-        val = extract(value,bp);
-        bitstring = cat(2, bitstring,dec2bin(val,bp));
+% Create place to hold recovered bits.
+outputMSB = zeros(qcif(1)*qcif(2),1);
+outputLSB = zeros(qcif(1)*qcif(2),1);
+
+msb = 1; lsb = 1;
+for i=1:size(dave1d,1)
+    if( key(i) == 1 )
+        % I have 4 bits
+        hword = extract(dave1d(i),bp);
         
-        msb = msb + 1;
+        % Inserting in the correct place
+        if msb <= lsb
+            outputMSB(msb) = hword;
+            msb = msb + 1;
+        else
+            outputMSB(lsb) = bitshift(outputMSB(lsb),bp);
+            outputMSB(lsb) = bitor(outputMSB(lsb),hword);  
+%             outputLSB(lsb) = hword;
+            lsb = lsb + 1;
+            
+            % Consider joining here.
+        end
+        
+        if lsb > size(outputLSB,1)
+            break;
+        end
     end
-    
-    % Store back and do some padding
-    output(i) = uint8(bin2dec(bitstring));
-%     output(i) = bitshift(output(i),
 end
 
 % Resize output
-output = reshape(output,qcif(1),qcif(2))';
+output = reshape(outputMSB,qcif(2),qcif(1))';
