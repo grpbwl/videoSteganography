@@ -4,10 +4,11 @@
 qcif = [ 176 144 ] ;
 cif = [ 352 288 ];
 
-F = 3;
-
+F = 10;
+tic;
 % Pre-allocating
 seeded_sequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,F);
+key = randi([0 1], cif(1)*cif(2),1);
 
 for frame=1:F
     %% Read the Image and scale to proper dimensions
@@ -23,7 +24,6 @@ for frame=1:F
     %% Parameters for .... something or another. 
     depth = 8;
     bp = 4;
-    key = randi([0 1], cif(1)*cif(2),1);
 
     %% Embed Seed
     daveOrig = carrier;
@@ -82,7 +82,8 @@ end
 
 % Save the sequence
 saveFileYuv(seeded_sequence, 'new_carrier.yuv', 'w');
-
+toc;
+break;
 
 %% Retrieve Seed
 % Convert seed and carrier into a 1D array
