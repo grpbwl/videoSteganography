@@ -28,7 +28,7 @@ output = size(seed1d); output = uint8(output);
 % Convert seed to binary and split it up
 binarySeed = dec2bin(seed1d,8);
 seedMSB = binarySeed(:,1:4);
-seedLSB = binarySeed(:,5,8);
+seedLSB = binarySeed(:,5:8);
 
 % Iterate through the carrier array
 msb = 1; lsb = 1;
@@ -42,6 +42,7 @@ for i=1:size(dave1d,1)
             msb = msb + 1;
         else
             currentSeed = bin2dec(seedLSB(lsb,:));
+            lsb = lsb + 1;
         end
         
         % Embed the corresponding part of the seed in here.
