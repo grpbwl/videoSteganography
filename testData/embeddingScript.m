@@ -4,7 +4,7 @@
 qcif = [ 176 144 ] ;
 cif = [ 352 288 ];
 
-F = 10;
+F = 150;
 tic;
 % Pre-allocating
 seeded_sequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,F);
