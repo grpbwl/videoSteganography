@@ -1,7 +1,7 @@
 %% Retrieve Seed
 qcif = [ 176 144 ] ;
 cif = [ 352 288 ];
-F=10;
+F=5;
 depth = 8;
 bp = 4;
 % Pre-allocating

@@ -4,7 +4,7 @@ cif = [ 352 288 ];
 depth = 8;
 bp = 4;
 
-F = 10;
+F = 5;
 % Pre-allocating
 seeded_sequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,F);
 
