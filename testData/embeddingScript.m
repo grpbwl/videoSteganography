@@ -32,9 +32,9 @@ for frame=1:F
     seed1d = reshape(seed',qcif(1)*qcif(2),1);
 
     % Convert seed to binary and split it up
-    binarySeed = dec2bin(seed1d,8);
-    seedMSB = binarySeed(:,1:4);
-    seedLSB = binarySeed(:,5:8);
+%     binarySeed = dec2bin(seed1d,8);
+    seedMSB = bitshift(seed1d,-4,4);
+    seedLSB = bitshift(seed1d,0,4);
 
     % Iterate through the carrier array
     msb = 1; lsb = 1;
@@ -44,10 +44,10 @@ for frame=1:F
 
             % Check which is next msb or lsb, give msb preferrence
             if msb <= lsb
-                currentSeed = bin2dec(seedMSB(msb,:));
+                currentSeed = seedMSB(msb,:);
                 msb = msb + 1;
             else
-                currentSeed = bin2dec(seedLSB(lsb,:));
+                currentSeed = seedLSB(lsb,:);
                 lsb = lsb + 1;
             end
 
