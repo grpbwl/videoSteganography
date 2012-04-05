@@ -27,11 +27,13 @@ seeded_carrier = uint32(seeded_carrier);
 
 % Perform embedding in correct order.
 for lsb=1:depth
-    seeded_carrier = bitset(seeded_carrier,lsb, bitget(seed,lsb));
+    seeded_carrier = bitset(seeded_carrier,lsb, 0);
 end
+seeded_carrier = bitor(seeded_carrier,uint32(seed));
 
 % Casting back to originating class.
 seeded_carrier = cast(seeded_carrier,class(carrier));
+% seeded_carrier = double(seeded_carrier);
 
 % Restoring negbit
 if negbit
