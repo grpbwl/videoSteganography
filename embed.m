@@ -32,8 +32,8 @@ end
 seeded_carrier = bitor(seeded_carrier,uint32(seed));
 
 % Casting back to originating class.
-seeded_carrier = cast(seeded_carrier,class(carrier));
-% seeded_carrier = double(seeded_carrier);
+% seeded_carrier = cast(seeded_carrier,class(carrier));
+seeded_carrier = double(seeded_carrier);
 
 % Restoring negbit
 if negbit
