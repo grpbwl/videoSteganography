@@ -1,15 +1,14 @@
-% Reading the information and storing it to get rid of the 4 MSB
-% dave = imread('data\daveg01.bmp');
-
 qcif = [ 176 144 ] ;
 cif = [ 352 288 ];
+% Parameters for .... something or another. 
+depth = 8;
+bp = 4;
 
-F = 150;
-tic;
+F = 10;
 % Pre-allocating
 seeded_sequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,F);
-key = randi([0 1], cif(1)*cif(2),1);
 
+key = randi([0 1], cif(1)*cif(2),1);
 for frame=1:F
     %% Read the Image and scale to proper dimensions
     % Get all three channels and convert to true grayscale.
@@ -20,10 +19,6 @@ for frame=1:F
 
     % carrier = imresize( carrier , [cif(1) cif(2)]);
     % seed = imresize( carrier , [qcif(1) qcif(2)]);
-
-    %% Parameters for .... something or another. 
-    depth = 8;
-    bp = 4;
 
     %% Embed Seed
     daveOrig = carrier;
@@ -82,42 +77,3 @@ end
 
 % Save the sequence
 saveFileYuv(seeded_sequence, 'new_carrier.yuv', 'w');
-toc;
-break;
-
-%% Retrieve Seed
-% Convert seed and carrier into a 1D array
-dctCarrier = mbdct2(seeded_carrier,0);
-carrier1d = reshape(dctCarrier',cif(1)*cif(2),1);
-
-% Create place to hold recovered bits.
-outputMSB = zeros(qcif(1)*qcif(2),1);
-outputLSB = zeros(qcif(1)*qcif(2),1);
-
-msb = 1; lsb = 1;
-for i=1:size(carrier1d,1)
-    if( key(i) == 1 )
-        % I have 4 bits
-        hword = extract(carrier1d(i),bp);
-        
-        % Inserting in the correct place
-        if msb <= lsb
-            outputMSB(msb) = hword;
-            msb = msb + 1;
-        else
-            outputMSB(lsb) = bitshift(outputMSB(lsb),bp);
-            outputMSB(lsb) = bitor(outputMSB(lsb),hword);  
-%             outputLSB(lsb) = hword;
-            lsb = lsb + 1;
-            
-            % Consider joining here.
-        end
-        
-        if lsb > size(outputLSB,1)
-            break;
-        end
-    end
-end
-
-% Resize output
-output = reshape(outputMSB,qcif(2),qcif(1))';
