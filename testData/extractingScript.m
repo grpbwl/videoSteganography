@@ -1,4 +1,4 @@
-%% Retrieve Seed
+%% Retrieve Seed 8 seconds
 qcif = [ 176 144 ] ;
 cif = [ 352 288 ];
 F=5;
@@ -8,7 +8,7 @@ bp = 4;
 seed_sequence = repmat(struct('cdata',uint8(zeros(qcif(2),qcif(1),3)),'colormap',cell(1)),1,F);
 
 for frame=1:F
-    [temp] =  loadFileYuv('new_carrier.yuv',cif(1),cif(2),frame);
+    [temp] =  loadFileYuv('trigoman.yuv',cif(1),cif(2),frame);
     seeded_carrier = rgb2gray(temp.cdata(:,:,:));
     
     % Convert seed and carrier into a 1D array

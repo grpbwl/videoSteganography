@@ -1,6 +1,6 @@
 qcif = [ 176 144 ] ;
 cif = [ 352 288 ];
-% Parameters for .... something or another. 
+% Parameters for .... something or another. % 21 seconds
 depth = 8;
 bp = 4;
 
@@ -76,4 +76,4 @@ for frame=1:F
 end
 
 % Save the sequence
-saveFileYuv(seeded_sequence, 'new_carrier.yuv', 'w');
+saveFileYuv(seeded_sequence, 'trigoman.yuv', 'w');
