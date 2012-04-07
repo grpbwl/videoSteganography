@@ -7,7 +7,7 @@ bp = 4;
 % Pre-allocating
 seed_sequence = repmat(struct('cdata',uint8(zeros(qcif(2),qcif(1),3)),'colormap',cell(1)),1,F);
 
-for frame=1:F
+parfor frame=1:F
     [temp] =  loadFileYuv('trigoman.yuv',cif(1),cif(2),frame);
     seeded_carrier = rgb2gray(temp.cdata(:,:,:));
     
