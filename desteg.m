@@ -1,4 +1,4 @@
-F = 150;
+F = 5;
 extracted=newFileYuv(176,144);
 ndctDomain = double(zeros(288,352));
 ninverseDctDomain = double(zeros(288,352));

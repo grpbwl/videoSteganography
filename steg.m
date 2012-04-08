@@ -1,5 +1,5 @@
 % Max frame
-F = 150;
+F = 5;
 carrier=newFileYuv(352,288);
 hide=double(zeros(1,50688));
 dctDomain = double(zeros(288,352));
