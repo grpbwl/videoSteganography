@@ -8,7 +8,6 @@ F = 5;
 % Pre-allocating
 seeded_sequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,F);
 
-key = randi([0 1], cif(1)*cif(2),1);
 parfor frame=1:F
     %% Read the Image and scale to proper dimensions
     % Get all three channels and convert to true grayscale.
