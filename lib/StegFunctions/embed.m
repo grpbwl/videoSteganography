@@ -1,23 +1,24 @@
-qcif = [ 176 144 ] ;
-cif = [ 352 288 ];
+% Load video dimensions
+load('format');
 % Parameters for .... something or another. % 21 seconds
 depth = 8;
 bp = 4;
 
+
 F = 5;
 % Pre-allocating
-seeded_sequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,F);
+seeded_sequence = repmat(struct('cdata',uint8(zeros(format.cif(2),format.cif(1),3)),'colormap',cell(1)),1,F);
 
 parfor frame=1:F
     %% Read the Image and scale to proper dimensions
     % Get all three channels and convert to true grayscale.
-    [temp] = loadFileYuv('foreman_qcif.yuv',qcif(1),qcif(2),frame);
+    [temp] = loadFileYuv('foreman_qcif.yuv',format.qcif(1),format.qcif(2),frame);
     seed = rgb2gray(temp.cdata(:,:,:));
-    [temp] = loadFileYuv('bus_cif.yuv',cif(1),cif(2),frame);
+    [temp] = loadFileYuv('bus_cif.yuv',format.cif(1),format.cif(2),frame);
     carrier = rgb2gray(temp.cdata(:,:,:));
 
-    % carrier = imresize( carrier , [cif(1) cif(2)]);
-    % seed = imresize( carrier , [qcif(1) qcif(2)]);
+    % carrier = imresize( carrier , [format.cif(1) format.cif(2)]);
+    % seed = imresize( carrier , [format.qcif(1) format.qcif(2)]);
 
     %% Embed Seed
     daveOrig = carrier;
@@ -27,8 +28,8 @@ parfor frame=1:F
     dctCarrier= mbdct2(carrier,0);
 
     % Convert seed and carrier into a 1D array
-    carrier1d = reshape(dctCarrier',cif(1)*cif(2),1);
-    seed1d = reshape(seed',qcif(1)*qcif(2),1);
+    carrier1d = reshape(dctCarrier',format.cif(1)*format.cif(2),1);
+    seed1d = reshape(seed',format.qcif(1)*format.qcif(2),1);
 
     % Convert seed to binary and split it up
 %     binarySeed = dec2bin(seed1d,8);
@@ -60,7 +61,7 @@ parfor frame=1:F
     end
 
     % Convert carrier back to 2D
-    seeded_carrier = reshape(carrier1d,cif(1),cif(2))';
+    seeded_carrier = reshape(carrier1d,format.cif(1),format.cif(2))';
 
     % Apply IDCT to dave
     seeded_carrier = uint8(mbdct2(seeded_carrier,1));
