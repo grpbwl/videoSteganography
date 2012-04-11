@@ -7,3 +7,4 @@
   * Output: QCIF
 * Attempt to hide information in the U, V, or UV channels.
   * Currently gettings some error about it.
+* See if we can store one frame from QCIF into multiple CIF frames.
