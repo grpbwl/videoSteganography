@@ -3,4 +3,3 @@ function [ mask ] = generateRandomMask( m, n )
 %   Generates a random mask of bits with size m*n x 1
 mask = randi([0 1], m*n,1);
 end
-
