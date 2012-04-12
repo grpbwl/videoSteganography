@@ -1,4 +1,4 @@
-function [ seededSequence , key ] = embed( carrierPath, seedPath, frameCount , key, bitPrecision )
+function [ seededSequence , key ] = embedSequence( carrierPath, seedPath, frameCount , key, bitPrecision )
 %EMBED Short Description
 %   Long Description
 
@@ -62,13 +62,6 @@ parfor frame=1:frameCount
     seeded_carrier = uint8(mbdct2(seeded_carrier,1));
     seeded_carrier = im2uint8(ind2rgb(seeded_carrier,gray(256)));
     
-    
     % Add to the sequence 
     seededSequence(frame).cdata = seeded_carrier;
-%     seeded_sequence(frame).cdata(:,:,1) = seeded_carrier;
-%     seeded_sequence(frame).cdata(:,:,2) = seeded_carrier;
-%     seeded_sequence(frame).cdata(:,:,3) = seeded_carrier;
 end
-
-% Save the sequence
-saveFileYuv(seededSequence, 'trigoman.yuv', 'w');
