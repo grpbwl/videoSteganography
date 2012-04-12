@@ -32,7 +32,7 @@ for f = 1 : 1 : nrFrame
     imgRgb = reshape(convertYuvToRgb(reshape(imgYuv, height * width, 3)), height, width, 3);
     % imgRgb = ycbcr2rgb(imgYuv);
     %imwrite(imgRgb,'ActualBackground.bmp','bmp');
-    mov(f) = im2frame(imgRgb);
+    mov(f) = im2frame(uint8(imgYuv));
     % 	mov(f).cdata = uint8(imgRgb);
     % 	mov(f).colormap =  [];
     %     imwrite(imgRgb,'ActualBackground.bmp','bmp');

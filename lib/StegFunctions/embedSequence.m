@@ -21,8 +21,8 @@ end
 for frame=1:frameCount
     %% Read current image and convert to grayscale.
     % Get all three channels and convert to true grayscale.
-    currentSeed = rgb2gray(seed(frame).cdata(:,:,:));
-    currentCarrier = rgb2gray(carrier(frame).cdata(:,:,:));
+    currentSeed = seed(frame).cdata(:,:,1); % Getting Y-Channel
+    currentCarrier = carrier(frame).cdata(:,:,2); % Getting U-Channel
 
     %% Embed Seed
     % Apply DCT to carrier
@@ -65,8 +65,10 @@ for frame=1:frameCount
 
     % Apply IDCT to dave and create 3 separate RGB channels in grayscale.
     seeded_carrier = uint8(mbdct2(seeded_carrier,1));
-    seeded_carrier = im2uint8(ind2rgb(seeded_carrier,gray(256)));
+%     seeded_carrier = im2uint8(ind2rgb(seeded_carrier,gray(256)));
     
     % Add to the sequence 
-    seededSequence(frame).cdata = seeded_carrier;
+    seededSequence(frame).cdata(:,:,1) = carrier(frame).cdata(:,:,1);
+    seededSequence(frame).cdata(:,:,2) = seeded_carrier;
+    seededSequence(frame).cdata(:,:,3) = carrier(frame).cdata(:,:,3);
 end
