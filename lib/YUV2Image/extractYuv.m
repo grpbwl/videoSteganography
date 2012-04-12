@@ -1,4 +1,4 @@
-function [ sequence ] = extractSequence( yuvPath , a, b, type)
+function [ sequence ] = extractYuv( yuvPath , a, b, type)
 %EXTRACTSEQUENCE Extracts a specific region of the yuvVideo
 %   Extract a sequence of frames from the YUV video starting from a to b.
 %   The type of the sequence must be specified, it must either be 'cif' or

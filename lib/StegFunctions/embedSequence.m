@@ -10,10 +10,15 @@ bitDepth = 8;
 seededSequence = repmat(struct('cdata',uint8(zeros(format.cif(2),format.cif(1),3)),'colormap',cell(1)),1,frameCount);
 
 % Get the sequence of frames.
-carrier = extractSequence(carrierPath,1,frameCount, 'cif');
-seed = extractSequence(seedPath, 1, frameCount, 'qcif');
+carrier = extractYuv(carrierPath,1,frameCount, 'cif');
+seed = extractYuv(seedPath, 1, frameCount, 'qcif');
 
-parfor frame=1:frameCount
+% If key is NaN, generate a random key
+if isnan(key)
+    key = generateRandomMask(format.cif(1),format.cif(2));
+end
+
+for frame=1:frameCount
     %% Read current image and convert to grayscale.
     % Get all three channels and convert to true grayscale.
     currentSeed = rgb2gray(seed(frame).cdata(:,:,:));
@@ -58,7 +63,7 @@ parfor frame=1:frameCount
     % Convert carrier back to 2D
     seeded_carrier = reshape(carrier1d,format.cif(1),format.cif(2))';
 
-    % Apply IDCT to dave
+    % Apply IDCT to dave and create 3 separate RGB channels in grayscale.
     seeded_carrier = uint8(mbdct2(seeded_carrier,1));
     seeded_carrier = im2uint8(ind2rgb(seeded_carrier,gray(256)));
     
