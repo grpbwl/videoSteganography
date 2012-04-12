@@ -1,46 +1,41 @@
+function [ seededSequence , key ] = embed( carrierPath, seedPath, frameCount , key, bitPrecision )
+%EMBED Short Description
+%   Long Description
+
 % Load video dimensions
 load('format');
-% Parameters for .... something or another. % 21 seconds
-depth = 8;
-bp = 4;
+bitDepth = 8;
 
+% Pre-allocating space for the 
+seededSequence = repmat(struct('cdata',uint8(zeros(format.cif(2),format.cif(1),3)),'colormap',cell(1)),1,frameCount);
 
-F = 5;
-% Pre-allocating
-seeded_sequence = repmat(struct('cdata',uint8(zeros(format.cif(2),format.cif(1),3)),'colormap',cell(1)),1,F);
+% Get the sequence of frames.
+carrier = extractSequence(carrierPath,1,frameCount, 'cif');
+seed = extractSequence(seedPath, 1, frameCount, 'qcif');
 
-parfor frame=1:F
-    %% Read the Image and scale to proper dimensions
+parfor frame=1:frameCount
+    %% Read current image and convert to grayscale.
     % Get all three channels and convert to true grayscale.
-    [temp] = loadFileYuv('foreman_qcif.yuv',format.qcif(1),format.qcif(2),frame);
-    seed = rgb2gray(temp.cdata(:,:,:));
-    [temp] = loadFileYuv('bus_cif.yuv',format.cif(1),format.cif(2),frame);
-    carrier = rgb2gray(temp.cdata(:,:,:));
-
-    % carrier = imresize( carrier , [format.cif(1) format.cif(2)]);
-    % seed = imresize( carrier , [format.qcif(1) format.qcif(2)]);
+    currentSeed = rgb2gray(seed(frame).cdata(:,:,:));
+    currentCarrier = rgb2gray(carrier(frame).cdata(:,:,:));
 
     %% Embed Seed
-    daveOrig = carrier;
-    seedClone = size(seed);
-
-    % Apply DCT to dave
-    dctCarrier= mbdct2(carrier,0);
+    % Apply DCT to carrier
+    dctCarrier= mbdct2(currentCarrier,0);
 
     % Convert seed and carrier into a 1D array
     carrier1d = reshape(dctCarrier',format.cif(1)*format.cif(2),1);
-    seed1d = reshape(seed',format.qcif(1)*format.qcif(2),1);
+    seed1d = reshape(currentSeed',format.qcif(1)*format.qcif(2),1);
 
     % Convert seed to binary and split it up
-%     binarySeed = dec2bin(seed1d,8);
-    seedMSB = bitshift(seed1d,-4,4);
-    seedLSB = bitshift(seed1d,0,4);
+    seedMSB = bitshift(seed1d,bitDepth-bitPrecision,bitPrecision); % Shifts left bitDepth-bitPrecision bits and keep bitPrecision bits.
+    seedLSB = bitshift(seed1d,0,bitPrecision);                     % Shifts 0 bits, and keeps bitPrecision bits.
 
     % Iterate through the carrier array
     msb = 1; lsb = 1;
     for i=1:size(carrier1d,1)  
         % If the key is set then we encode the next value here.
-        if( key(i) == 1 )
+        if( key(i) == 1 ) % TODO: fix slicing?
 
             % Check which is next msb or lsb, give msb preferrence
             if msb <= lsb
@@ -52,7 +47,7 @@ parfor frame=1:F
             end
 
             % Embed the corresponding part of the seed in here.
-            carrier1d(i) = embed(carrier1d(i),currentSeed, bp );
+            carrier1d(i) = embed(carrier1d(i),currentSeed, bitPrecision );
 
             if lsb > size(seedLSB,1)
                 break;
@@ -69,11 +64,11 @@ parfor frame=1:F
     
     
     % Add to the sequence 
-    seeded_sequence(frame).cdata = seeded_carrier;
+    seededSequence(frame).cdata = seeded_carrier;
 %     seeded_sequence(frame).cdata(:,:,1) = seeded_carrier;
 %     seeded_sequence(frame).cdata(:,:,2) = seeded_carrier;
 %     seeded_sequence(frame).cdata(:,:,3) = seeded_carrier;
 end
 
 % Save the sequence
-saveFileYuv(seeded_sequence, 'trigoman.yuv', 'w');
+saveFileYuv(seededSequence, 'trigoman.yuv', 'w');
