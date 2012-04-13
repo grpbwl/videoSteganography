@@ -25,25 +25,20 @@ for frame=1:frameCount
 
     bitCounter = 1; lsb = 0;
     for i=1:size(carrier1d,1)
-        if( key(i) == 1 )
-            % I have 4 bits
-            extractedValue = extract(carrier1d(i),bitPrecision);
-
-            % If bitCounter is odd then it's an MSB otherwise it's the LSB
-            % so join.
-            if lsb == 0
-                % Shift so that the bits are in the correct location.
-                outputBits(bitCounter) = bitshift(extractedValue,format.bitDepth-bitPrecision,format.bitDepth);
-                
-                % Don't increase the counter as another one goes in there
-                % :)
-%                 bitCounter = bitCounter + 1;
-                lsb = 1;
-            else
-%                 outputBits(lsb) = bitshift(outputBits(lsb),format.bitDepth-bitPrecision,format.bitDepth);
-                outputBits(bitCounter) = bitor(outputBits(bitCounter),extractedValue);  
+        if( key(i) == 1 )            
+            
+            % Combine the values, crazy complex. So it'll 'or' the value
+            % in the outputBits array and either the msb or the lsb of the
+            % current carrier 8-bit string.
+            outputBits(bitCounter) = bitor(outputBits(bitCounter), extract( carrier1d(i), bitPrecision, format.bitDepth, lsb );
+            
+            % Increase the bitCounter only if it's lsb and flip the lsb
+            % flag.
+            if lsb
                 bitCounter = bitCounter + 1;
                 lsb = 0;
+            else
+                lsb = 1;
             end
 
             if bitCounter > size(outputBits,1)
