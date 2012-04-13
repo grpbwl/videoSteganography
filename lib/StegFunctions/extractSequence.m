@@ -21,32 +21,39 @@ for frame=1:frameCount
     carrier1d = reshape(dctCarrier',format.cif(1)*format.cif(2),1);
 
     % Create place to hold recovered bits.
-    outputMSB = zeros(format.qcif(1)*format.qcif(2),1);
+    outputBits = zeros(format.qcif(1)*format.qcif(2),1);
 
-    msb = 1; lsb = 1;
+    bitCounter = 1; lsb = 1;
     for i=1:size(carrier1d,1)
         if( key(i) == 1 )
             % I have 4 bits
             extractedValue = extract(carrier1d(i),bitPrecision);
 
-            % Inserting in the correct place
-            if msb <= lsb
-                outputMSB(msb) = extractedValue;
-                msb = msb + 1;
+            % If bitCounter is odd then it's an MSB otherwise it's the LSB
+            % so join.
+            if lsb == 0
+                % Shift so that the bits are in the correct location.
+                outputBits(bitCounter) = bitshift(extractedValue,format.bitDepth-bitPrecision,format.bitDepth);
+                
+                % Don't increase the counter as another one goes in there
+                % :)
+%                 bitCounter = bitCounter + 1;
+                lsb = 1;
             else
-                outputMSB(lsb) = bitshift(outputMSB(lsb),format.bitDepth-bitPrecision,format.bitDepth);
-                outputMSB(lsb) = bitor(outputMSB(lsb),extractedValue);  
-                lsb = lsb + 1;
+%                 outputBits(lsb) = bitshift(outputBits(lsb),format.bitDepth-bitPrecision,format.bitDepth);
+                outputBits(bitCounter) = bitor(outputBits(bitCounter),extractedValue);  
+                bitCounter = bitCounter + 1;
+                lsb = 0;
             end
 
-            if lsb > size(outputMSB,1)
+            if bitCounter > size(outputBits,1)
                 break;
             end
         end
     end
 
     % Resize output
-    output = im2uint8(ind2rgb(reshape(outputMSB,format.qcif(1),format.qcif(2))',gray(256)));
+    output = im2uint8(ind2rgb(reshape(outputBits,format.qcif(1),format.qcif(2))',gray(256)));
     
     % Store in YUV Sequence
     sequence(frame).cdata = output;

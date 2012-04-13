@@ -3,7 +3,7 @@ function [ seed ] = extract( seeded_carrier , depth)
 %   TODO: Detailed explanation goes here
 
 % TODO: Decide on the bit precision
-bit_precision = 8;
+% bit_precision = 8;
 
 % Pre-process seeded carrier, truncate, abs, convert to uint32
 carrier = uint32(abs(fix(seeded_carrier)));

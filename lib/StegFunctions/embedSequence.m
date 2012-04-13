@@ -1,12 +1,11 @@
 function [ seededSequence , key ] = embedSequence( carrierPath, seedPath, frameCount , key, bitPrecision )
-%EMBED Short Description
+%EMBEDSEQUENCE Short Description
 %   Long Description
 
-% Load video dimensions
+% Load video dimensions and bitDepth
 load('format');
-bitDepth = 8;
 
-% Pre-allocating space for the 
+% Pre-allocating space for the seeded sequence.
 seededSequence = repmat(struct('cdata',uint8(zeros(format.cif(2),format.cif(1),3)),'colormap',cell(1)),1,frameCount);
 
 % Get the sequence of frames.
@@ -33,7 +32,7 @@ for frame=1:frameCount
     seed1d = reshape(currentSeed',format.qcif(1)*format.qcif(2),1);
 
     % Convert seed to binary and split it up
-    seedMSB = bitshift(seed1d,bitDepth-bitPrecision,bitPrecision); % Shifts left bitDepth-bitPrecision bits and keep bitPrecision bits.
+    seedMSB = bitshift(seed1d,format.bitDepth-bitPrecision,bitPrecision); % Shifts left bitDepth-bitPrecision bits and keep bitPrecision bits.
     seedLSB = bitshift(seed1d,0,bitPrecision);                     % Shifts 0 bits, and keeps bitPrecision bits.
 
     % Iterate through the carrier array
@@ -69,4 +68,5 @@ for frame=1:frameCount
     
     % Add to the sequence 
     seededSequence(frame).cdata = seeded_carrier;
+end
 end
