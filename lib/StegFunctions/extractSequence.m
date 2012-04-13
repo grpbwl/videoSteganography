@@ -30,7 +30,7 @@ for frame=1:frameCount
             % Combine the values, crazy complex. So it'll 'or' the value
             % in the outputBits array and either the msb or the lsb of the
             % current carrier 8-bit string.
-            outputBits(bitCounter) = bitor(outputBits(bitCounter), extract( carrier1d(i), bitPrecision, format.bitDepth, lsb );
+            outputBits(bitCounter) = bitor(outputBits(bitCounter), extract( carrier1d(i), bitPrecision, format.bitDepth, lsb ));
             
             % Increase the bitCounter only if it's lsb and flip the lsb
             % flag.
