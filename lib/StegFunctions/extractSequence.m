@@ -23,7 +23,7 @@ for frame=1:frameCount
     % Create place to hold recovered bits.
     outputBits = zeros(format.qcif(1)*format.qcif(2),1);
 
-    bitCounter = 1; lsb = 1;
+    bitCounter = 1; lsb = 0;
     for i=1:size(carrier1d,1)
         if( key(i) == 1 )
             % I have 4 bits

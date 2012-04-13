@@ -1,7 +1,11 @@
+%% Parameters
+f = 5;
+bp = 4
+
 %% Embed the seed image.
-[s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',1,NaN,4);
+[s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',f,NaN,bp);
 saveFileYuv(s,'test.yuv','w');
 
 %% Extract embedded frame.
-o = extractSequence('test.yuv',1,k,4);
+o = extractSequence('test.yuv',f,k,bp);
 saveFileYuv(o,'seed.yuv','w');
