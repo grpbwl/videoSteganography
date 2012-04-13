@@ -32,7 +32,7 @@ for frame=1:frameCount
     seed1d = reshape(currentSeed',format.qcif(1)*format.qcif(2),1);
 
     % Convert seed to binary and split it up
-    seedMSB = bitshift(seed1d,format.bitDepth-bitPrecision,bitPrecision); % Shifts left bitDepth-bitPrecision bits and keep bitPrecision bits.
+    seedMSB = bitshift(seed1d,bitPrecision-format.bitDepth,bitPrecision); % Shifts right bitDepth-bitPrecision bits and keep bitPrecision bits.
     seedLSB = bitshift(seed1d,0,bitPrecision);                     % Shifts 0 bits, and keeps bitPrecision bits.
 
     % Iterate through the carrier array
