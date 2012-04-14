@@ -1,7 +1,8 @@
 %% Parameters
 f = 1;
 bp = 4;
-
+clear key;
+% load('key');
 %% Embed the seed image.
 [s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',f,NaN,bp);
 saveFileYuv(s,'test.yuv','w');

@@ -68,7 +68,7 @@ for frame=1:frameCount
 %     seeded_carrier = im2uint8(ind2rgb(seeded_carrier,gray(256)));
     
     % Add to the sequence 
-    seededSequence(frame).cdata(:,:,1) = seeded_carrier;
+    seededSequence(frame).cdata(:,:,1) = seeded_carrier;%carrier(frame).cdata(:,:,1);
     seededSequence(frame).cdata(:,:,2) = carrier(frame).cdata(:,:,2);
     seededSequence(frame).cdata(:,:,3) = carrier(frame).cdata(:,:,3);
 end

@@ -1,24 +1,16 @@
-function [ seed ] = extract( seeded_carrier , depth)
-%EXTRACT Extracts matrix
+function seed = extract( seededCarrier , bitPrecision, bitDepth, lsbFlag)
+%EXTRACT Extracts specific set of bits from the seededCarrier
 %   TODO: Detailed explanation goes here
 
-% TODO: Decide on the bit precision
-bit_precision = 8;
-
 % Pre-process seeded carrier, truncate, abs, convert to uint32
-carrier = uint32(abs(fix(seeded_carrier)));
+carrier = uint32(abs(fix(seededCarrier)));
 
-% % Obtain the last depth bits.
-% bitstring = dec2bin(carrier, bit_precision)';
-% offset = size(bitstring,1) - bit_precision;
-% first = bit_precision-depth + 1 + offset;
-% last = bit_precision + offset;
-% seedstring = bitstring(first:last);
+% Extract the bits that we need, that is get the last bitPrecision bits.
+seed = uint8(bitshift(carrier,0,bitPrecision));
 
-% Convert string to a number and pad it to be the correct bit size
-seed = uint8(bitshift(carrier,0,depth));
-
-% DEBUG: Printing out the binary just to confirm.
-% disp(dec2bin(seed,bit_precision))
+% If msb shift accordingly.
+if lsbFlag == 0
+    seed = bitshift(seed,bitDepth-bitPrecision,bitDepth);
 end
 
+end

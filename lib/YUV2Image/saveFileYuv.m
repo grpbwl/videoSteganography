@@ -14,10 +14,11 @@ dim = size(mov(1).cdata);
 nrFrame = length(mov);
 
 for f = 1 : 1 : nrFrame
-	imgRgb = frame2im(mov(f));
+% 	imgRgb = frame2im(mov(f));
+    imgYuv = frame2im(mov(f));
 	
 	% convert YUV to RGB
-	imgYuv = reshape(convertRgbToYuv(reshape(imgRgb, dim(1) * dim(2), 3)), dim(1), dim(2), 3);
+% 	imgYuv = reshape(convertRgbToYuv(reshape(imgRgb, dim(1) * dim(2), 3)), dim(1), dim(2), 3);
 
 	% write Y component
 	buf = reshape(imgYuv(:, :, 1).', [], 1); % reshape
