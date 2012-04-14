@@ -62,9 +62,8 @@ for frame=1:frameCount
     % Convert carrier back to 2D
     seeded_carrier = reshape(carrier1d,format.cif(1),format.cif(2))';
 
-    % Apply IDCT to dave and create 3 separate RGB channels in grayscale.
+    % Apply IDCT to the Y-Channel.
     seeded_carrier = uint8(mbdct2(seeded_carrier,1));
-%     seeded_carrier = im2uint8(ind2rgb(seeded_carrier,gray(256)));
     
     % Add to the sequence 
     seededSequence(frame).cdata(:,:,1) = seeded_carrier;%carrier(frame).cdata(:,:,1);

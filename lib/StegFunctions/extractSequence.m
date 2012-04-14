@@ -13,8 +13,7 @@ seededCarrier = extractYuv(seededSequencePath,1,frameCount,'cif');
 
 for frame=1:frameCount
     
-    % Get current frame and convert 3 channels to grayscale.
-%     currentCarrier = rgb2gray(seededCarrier(frame).cdata(:,:,:));
+    % Get current frame's Y-Channel.
     currentCarrier = seededCarrier(frame).cdata(:,:,1);
     
     % Convert seed and carrier into a 1D array
@@ -50,13 +49,9 @@ for frame=1:frameCount
 
     % Resize output
     output = im2uint8(ind2rgb(reshape(outputBits,format.qcif(1),format.qcif(2))',gray(256)));
-%     output = reshape(outputBits,format.qcif(1),format.qcif(2))';
     
     % Store in YUV Sequence
     sequence(frame).cdata = output;
-%     sequence(frame).cdata(:,:,1) = uint8(output);
-%     sequence(frame).cdata(:,:,2) = seededCarrier(frame).cdata(:,:,2);
-%     sequence(frame).cdata(:,:,3) = seededCarrier(frame).cdata(:,:,3);
 end
 
 end
