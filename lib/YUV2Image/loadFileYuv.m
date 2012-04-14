@@ -29,7 +29,7 @@ for f = 1 : 1 : nrFrame
     % imgYuv = imgYuv / 255;
     
     % convert YUV to RGB
-    imgRgb = reshape(convertYuvToRgb(reshape(imgYuv, height * width, 3)), height, width, 3);
+%     imgRgb = reshape(convertYuvToRgb(reshape(imgYuv, height * width, 3)), height, width, 3);
     % imgRgb = ycbcr2rgb(imgYuv);
     %imwrite(imgRgb,'ActualBackground.bmp','bmp');
     mov(f) = im2frame(uint8(imgYuv));
