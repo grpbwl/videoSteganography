@@ -53,7 +53,8 @@ for frame=1:frameCount
 %     output = reshape(outputBits,format.qcif(1),format.qcif(2))';
     
     % Store in YUV Sequence
-    sequence(frame).cdata(:,:,1) = uint8(output);
+    sequence(frame).cdata = output;
+%     sequence(frame).cdata(:,:,1) = uint8(output);
 %     sequence(frame).cdata(:,:,2) = seededCarrier(frame).cdata(:,:,2);
 %     sequence(frame).cdata(:,:,3) = seededCarrier(frame).cdata(:,:,3);
 end

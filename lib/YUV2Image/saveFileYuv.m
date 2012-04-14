@@ -1,4 +1,4 @@
-function saveFileYuv(mov, fileName, mode)
+function saveFileYuv(mov, fileName, mode, isRGB)
 % save RGB movie [0, 255] to YUV 4:2:0 file
 
 switch mode
@@ -14,11 +14,13 @@ dim = size(mov(1).cdata);
 nrFrame = length(mov);
 
 for f = 1 : 1 : nrFrame
-% 	imgRgb = frame2im(mov(f));
-    imgYuv = frame2im(mov(f));
+	imgRgb = frame2im(mov(f));
+    imgYuv = imgRgb;
 	
 	% convert YUV to RGB
-% 	imgYuv = reshape(convertRgbToYuv(reshape(imgRgb, dim(1) * dim(2), 3)), dim(1), dim(2), 3);
+    if isRGB
+        imgYuv = reshape(convertRgbToYuv(reshape(imgRgb, dim(1) * dim(2), 3)), dim(1), dim(2), 3);
+    end
 
 	% write Y component
 	buf = reshape(imgYuv(:, :, 1).', [], 1); % reshape
