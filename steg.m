@@ -1,11 +1,10 @@
 % Max frame
-F = 5;
+F = 60;
 carrier=newFileYuv(352,288);
 hide=double(zeros(1,50688));
 dctDomain = double(zeros(288,352));
 inverseDctDomain = double(zeros(288,352));
 for frame=1:F
-    tic;
     [seed] = loadFileYuv('foreman_qcif.yuv', 176, 144, frame);
     [host]= loadFileYuv('bus_cif.yuv',352, 288, frame);
 
@@ -72,6 +71,5 @@ for frame=1:F
         carrier(frame).cdata(:,:,1)=newImg;
         carrier(frame).cdata(:,:,2)=newImg;
         carrier(frame).cdata(:,:,3)=newImg;
-        toc;
 end
 saveFileYuv(carrier, 'new_carrier.yuv', 'w');

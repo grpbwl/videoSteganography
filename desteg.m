@@ -1,10 +1,10 @@
-F = 5;
+F = 60;
 extracted=newFileYuv(176,144);
 ndctDomain = double(zeros(288,352));
 ninverseDctDomain = double(zeros(288,352));
 unhide=double(zeros(1,50688));
+tic;
 for frame=1:F
-    tic;
     [carrier]= loadFileYuv('new_carrier.yuv',352, 288, frame);    
     scaledImg = double(carrier.cdata(:,:,1));
     
@@ -68,6 +68,6 @@ for frame=1:F
     extracted(frame).cdata(:,:,1)=new_im;
     extracted(frame).cdata(:,:,2)=new_im;
     extracted(frame).cdata(:,:,3)=new_im;
-    toc;
 end
+toc;
 saveFileYuv(extracted, 'extracted.yuv', 'w');
