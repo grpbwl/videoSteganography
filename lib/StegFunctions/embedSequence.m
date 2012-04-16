@@ -4,9 +4,12 @@ function [ seededSequence , key ] = embedSequence( carrierPath, seedPath, frameC
 
 % Load video dimensions and bitDepth
 load('format');
+cif = format.cif;
+qcif = format.qcif;
+bitDepth = format.bitDepth;
 
 % Pre-allocating space for the seeded sequence.
-seededSequence = repmat(struct('cdata',uint8(zeros(format.cif(2),format.cif(1),3)),'colormap',cell(1)),1,frameCount);
+seededSequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,frameCount);
 
 % Get the sequence of frames.
 carrier = extractYuv(carrierPath,1,frameCount, 'cif');
@@ -14,10 +17,10 @@ seed = extractYuv(seedPath, 1, frameCount, 'qcif');
 
 % If key is NaN, generate a random key
 if isnan(key)
-    key = generateRandomMask(format.cif(1),format.cif(2));
+    key = generateRandomMask(cif(1),cif(2));
 end
 
-for frame=1:frameCount
+parfor frame=1:frameCount
     %% Read current image and convert to grayscale.
     % Get all three channels and convert to true grayscale.
     currentSeed = seed(frame).cdata(:,:,1); % Getting Y-Channel
@@ -28,11 +31,11 @@ for frame=1:frameCount
     dctCarrier= mbdct2(currentCarrier,0);
 
     % Convert seed and carrier into a 1D array
-    carrier1d = reshape(dctCarrier',format.cif(1)*format.cif(2),1);
-    seed1d = reshape(currentSeed',format.qcif(1)*format.qcif(2),1);
+    carrier1d = reshape(dctCarrier',cif(1)*cif(2),1);
+    seed1d = reshape(currentSeed',qcif(1)*qcif(2),1);
 
     % Convert seed to binary and split it up
-    seedMSB = bitshift(seed1d,bitPrecision-format.bitDepth,bitPrecision); % Shifts right bitDepth-bitPrecision bits and keep bitPrecision bits.
+    seedMSB = bitshift(seed1d,bitPrecision-bitDepth,bitPrecision); % Shifts right bitDepth-bitPrecision bits and keep bitPrecision bits.
     seedLSB = bitshift(seed1d,0,bitPrecision);                     % Shifts 0 bits, and keeps bitPrecision bits.
 
     % Iterate through the carrier array
@@ -60,7 +63,7 @@ for frame=1:frameCount
     end
 
     % Convert carrier back to 2D
-    seeded_carrier = reshape(carrier1d,format.cif(1),format.cif(2))';
+    seeded_carrier = reshape(carrier1d,cif(1),cif(2))';
 
     % Apply IDCT to the Y-Channel.
     seeded_carrier = uint8(mbdct2(seeded_carrier,1));
