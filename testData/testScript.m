@@ -10,9 +10,9 @@ clear key;
 load('key');
 %% Embed the seed image.
 tic
-[s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',f,key,bp(3));
+[s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',f,key,bp(4));
 toc
-saveFileYuv(s,strcat(int2str(bp(3)),carrierOutput),1,0);
+saveFileYuv(s,strcat(int2str(bp(4)),carrierOutput),1,0);
 % for i=1:size(bp,2)
 %     [s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',f,key,bp(i));
 %     saveFileYuv(s,strcat(int2str(bp(i)),carrierOutput),1,0);
@@ -23,9 +23,9 @@ saveFileYuv(s,strcat(int2str(bp(3)),carrierOutput),1,0);
 
 %% Extract embedded frame.
 tic
-o = extractSequence(strcat(int2str(bp(3)),carrierOutput),f,key,bp(3));
+o = extractSequence(strcat(int2str(bp(4)),carrierOutput),f,key,bp(4));
 toc
-saveFileYuv(o,strcat(int2str(bp(3)),seedOutput),1,1);
+saveFileYuv(o,strcat(int2str(bp(4)),seedOutput),1,1);
 % for i=1:size(bp,2)
 %     o = extractSequence(strcat(int2str(bp(i)),carrierOutput),f,key,bp(i));
 %     ssimValue = ssim(seed.cdata(:,:,1),o.cdata(:,:,1));
