@@ -20,7 +20,7 @@ if isnan(key)
     key = generateRandomMask(cif(1),cif(2));
 end
 
-parfor frame=1:frameCount
+for frame=1:frameCount
     %% Read current image and convert to grayscale.
     % Get all three channels and convert to true grayscale.
     currentSeed = seed(frame).cdata(:,:,1); % Getting Y-Channel
@@ -46,10 +46,10 @@ parfor frame=1:frameCount
 
             % Check which is next msb or lsb, give msb preferrence
             if msb <= lsb
-                currentSeed = seedMSB(msb,:);
+                currentSeed = seedMSB(msb);
                 msb = msb + 1;
             else
-                currentSeed = seedLSB(lsb,:);
+                currentSeed = seedLSB(lsb);
                 lsb = lsb + 1;
             end
 

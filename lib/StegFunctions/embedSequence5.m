@@ -26,18 +26,53 @@ end
 parfor frame=1:frameCount
     %% Read current image and convert to grayscale.
     % Get all three channels and convert to true grayscale.
-    currentSeed = seed(frame).cdata(:,:,1); % Getting Y-Channel
+    slicedSeed = seed(frame);
+    currentSeed = slicedSeed.cdata(:,:,1); % Getting Y-Channel
     
     % Pre-allocate memory for carriers
-    carriers = repmat(struct('data',zeros(cif(1),cif(2))),fDepth,1);
+    carriers = repmat(struct('data',zeros(cif(1),cif(2),3)),fDepth,1);
+    carriersDCT = repmat(struct('data',zeros(cif(1)*cif(2))),fDepth,1);
     
-    % Get's us the corresponding frame to get.
+    % Get the next 5 valid frames and store them in dct form.
     carrierFrame = fDepth*frame-(fDepth-1);
     for i=1:5
-        carriers(i) = carrier(carrierFrame).cdata(:,:,1); % Getting Y-Channels
-        carriers(i) = mbdct2(carriers(i),0); 
+        carriers(i).data= carrier(carrierFrame).cdata; % Getting YUV-Channels
+        carriersDCT(i).data = reshape(mbdct2(carriers(i).data(:,:,1)',0),cif(1)*cif(2),1); % Getting DCT of Y channel.
         carrierFrame = carrierFrame + 1;
     end
+    
+    % Make the seed be a 1 dimensional array.
+    seed1d = reshape(currentSeed',qcif(1)*qcif(2),1);
+    
+    % Convert seed to binary and split it up
+    seedMSB = bitshift(seed1d,bitPrecision-bitDepth,bitPrecision); % Shifts right bitDepth-bitPrecision bits and keep bitPrecision bits.
+    seedLSB = bitshift(seed1d,0,bitPrecision);                     % Shifts 0 bits, and keeps bitPrecision bits.
+    
+    i = 1;
+    msb = 1; lsb = 1;
+    while( i <= size(key,1) )
+        if( key(i) == 1 )
+             % Check which is next msb or lsb, give msb preferrence
+            if msb <= lsb
+                currentSeed = seedMSB(msb);
+                msb = msb + 1;
+            else
+                currentSeed = seedLSB(lsb);
+                lsb = lsb + 1;
+            end
+            % Store one bit into the fDepth frames
+            for j=1:fDepth
+               bit = bitget(currentSeed,j);
+               carriersDCT(j).data(i) = embed(carriersDCT(j).data(i),bit,1);
+            end
+            
+            if lsb > size(seedLSB,1)
+                break;
+            end
+        end
+        
+    end
+    
     
     
     
