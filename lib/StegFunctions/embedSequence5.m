@@ -23,7 +23,7 @@ if isnan(key)
 end
 
 
-parfor frame=1:frameCount
+for frame=1:frameCount
     %% Read current image and convert to grayscale.
     % Get all three channels and convert to true grayscale.
     slicedSeed = seed(frame);
@@ -31,11 +31,11 @@ parfor frame=1:frameCount
     
     % Pre-allocate memory for carriers
     carriers = repmat(struct('data',zeros(cif(1),cif(2),3)),fDepth,1);
-    carriersDCT = repmat(struct('data',zeros(cif(1)*cif(2))),fDepth,1);
+    carriersDCT = repmat(struct('data',zeros(cif(1)*cif(2),1)),fDepth,1);
     
     % Get the next 5 valid frames and store them in dct form.
     carrierFrame = fDepth*frame-(fDepth-1);
-    for i=1:5
+    for i=1:fDepth
         carriers(i).data= carrier(carrierFrame).cdata; % Getting YUV-Channels
         carriersDCT(i).data = reshape(mbdct2(carriers(i).data(:,:,1)',0),cif(1)*cif(2),1); % Getting DCT of Y channel.
         carrierFrame = carrierFrame + 1;
@@ -70,10 +70,15 @@ parfor frame=1:frameCount
                 break;
             end
         end
-        
+        i = i + 1;
     end
     
-    
-    
-    
+    %% Put everything back from those 5 frames.
+    carrierFrame = fDepth*frame-(fDepth-1);
+    for i=1:fDepth
+        seededSequence(carrierFrame).cdata(:,:,1) = uint8(mbdct2(reshape(carriersDCT(i).data,cif(1),cif(2))',1));
+        seededSequence(carrierFrame).cdata(:,:,2) = carriers(i).data(:,:,2);
+        seededSequence(carrierFrame).cdata(:,:,3) = carriers(i).data(:,:,3);
+        carrierFrame = carrierFrame + 1;
+    end    
 end

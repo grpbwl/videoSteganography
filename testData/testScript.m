@@ -1,13 +1,16 @@
 %% Parameters
 load('format');
-carrier = loadFileYuv('bus_cif.yuv',format.cif(1),format.cif(2),1);
-seed = loadFileYuv('foreman_qcif.yuv',format.qcif(1),format.qcif(2),1);
+% carrier = loadFileYuv('bus_cif.yuv',format.cif(1),format.cif(2),1);
+% seed = loadFileYuv('foreman_qcif.yuv',format.qcif(1),format.qcif(2),1);
 carrierOutput = '_output.yuv';
 seedOutput = '_seed.yuv';
 f = 1;
 bp = [1 2 4 5];
 clear key;
 load('key');
+%% Testing the other one
+[s,k] = embedSequence5('bus_cif.yuv','foreman_qcif.yuv',f,key,bp(4));
+
 %% Embed the seed image.
 for i=1:size(bp,2)
     [s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',f,key,bp(i));
