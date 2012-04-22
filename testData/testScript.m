@@ -10,6 +10,11 @@ clear key;
 load('key');
 %% Testing the other one
 [s,k] = embedSequence5('bus_cif.yuv','foreman_qcif.yuv',f,key,bp(4));
+saveFileYuv(s,'test.yuv',1,0);
+
+%% Testing the other other one
+o = extractSequence5('test.yuv',f,key,bp(1));
+saveFileYuv(o,'seed.yuv',1,1);
 
 %% Embed the seed image.
 for i=1:size(bp,2)

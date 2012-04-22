@@ -43,22 +43,31 @@ for frame=1:frameCount
     msb = 1;bitCounter = 1;
     while( i <= size(key,1) )
         if( key(i) == 1 )
-        
-            temp = uint8(0);
-            % Do the bottom 5 times
-            for k=1:5
-                extracted = extract(carriersDCT(k).data(i),bitPrecision,bitDepth,1);
-                % Bitshift the current bit one to the right and perform an
-                % OR operation with the upcoming bit.
-                temp = bitor(bitshift(temp,1),extracted);
-                % Reverse bit order. TODO: Must check if the bits are
-                % correct.
-            end
-            
+                   
             if msb == 1
-                outputBits(bitCounter) = bitrevorder(temp);
+                temp = uint8(0);
+                % Do the bottom 5 times
+                for k=5:-1:1
+                    extracted = extract(carriersDCT(k).data(i),bitPrecision,bitDepth,1);
+                    % Bitshift the current bit one to the right and perform an
+                    % OR operation with the upcoming bit.
+                    temp = bitor(bitshift(temp,1),extracted);
+                    % Reverse bit order. TODO: Must check if the bits are
+                    % correct.
+                end 
                 msb = 0;
+                outputBits(bitCounter) = bitshift(temp,3);
             else
+                temp = uint8(0);
+                % Do the bottom 5 times
+                for k=1:5
+                    extracted = extract(carriersDCT(k).data(i),bitPrecision,bitDepth,1);
+                    % Bitshift the current bit one to the right and perform an
+                    % OR operation with the upcoming bit.
+                    temp = bitor(bitshift(temp,1),extracted);
+                    % Reverse bit order. TODO: Must check if the bits are
+                    % correct.
+                end 
                 outputBits(bitCounter) = bitor(outputBits(bitCounter),temp);
                 bitCounter = bitCounter + 1;
                 msb = 1;
