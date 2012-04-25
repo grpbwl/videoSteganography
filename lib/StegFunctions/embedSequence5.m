@@ -1,4 +1,4 @@
-function [ seededSequence , key ] = embedSequence( carrierPath, seedPath, frameCount , key, bitPrecision )
+function [ seededSequence , key ] = embedSequence5( carrierPath, seedPath, frameCount , key, bitPrecision )
 %EMBEDSEQUENCE Short Description
 %   Long Description
 
