@@ -25,7 +25,7 @@ end
 sequence = repmat(struct('cdata',uint8(zeros(sequenceSize(2),sequenceSize(1),3)),'colormap',cell(1)),1,(b-a));
 
 % Traverse the video sequence extracting all the frames and storing them
-for frame=a:b
+for frame=1:abs(b-a)+1
     temp = loadFileYuv(yuvPath,sequenceSize(1),sequenceSize(2),frame);
     sequence(frame).cdata = temp.cdata;
 end

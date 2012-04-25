@@ -2,7 +2,7 @@
 load('format');
 f = 5;
 bp = [1 2 4 5];
-carrierPath = 'bus_cif.yuv';
+carrierPath = 'BigBuckBunny_CIF_24fps.yuv';
 seedPath = 'foreman_qcif.yuv';
 carrier = extractYuv(carrierPath,1,f,'cif');
 seed = extractYuv(seedPath,1,f,'qcif');
