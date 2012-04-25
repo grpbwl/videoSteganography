@@ -12,7 +12,7 @@ bitDepth = format.bitDepth;
 seededSequence = repmat(struct('cdata',uint8(zeros(cif(2),cif(1),3)),'colormap',cell(1)),1,frameCount);
 
 % Get the sequence of frames.
-carrier = extractYuv(carrierPath,1,frameCount, 'cif');
+carrier = extractYuv(carrierPath,51,55, 'cif');
 seed = extractYuv(seedPath, 1, frameCount, 'qcif');
 
 % If key is NaN, generate a random key

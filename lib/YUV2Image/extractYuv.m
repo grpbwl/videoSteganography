@@ -22,11 +22,11 @@ if a > b
     error('Invalid range: a must be less than b.');
 end
 
-sequence = repmat(struct('cdata',uint8(zeros(sequenceSize(2),sequenceSize(1),3)),'colormap',cell(1)),1,(b-a));
+sequence = repmat(struct('cdata',uint8(zeros(sequenceSize(2),sequenceSize(1),3)),'colormap',cell(1)),1,(b-a)+1);
 
 % Traverse the video sequence extracting all the frames and storing them
 for frame=1:abs(b-a)+1
-    temp = loadFileYuv(yuvPath,sequenceSize(1),sequenceSize(2),frame);
+    temp = loadFileYuv(yuvPath,sequenceSize(1),sequenceSize(2),a+frame-1);
     sequence(frame).cdata = temp.cdata;
 end
 

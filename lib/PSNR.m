@@ -93,4 +93,5 @@ end
 
 error_diff = A - B;
 decibels = 20*log10(255/(sqrt(mean(mean(error_diff.^2)))));
-output = sprintf('PSNR: +%5.2f dB',decibels);
+% output = sprintf('PSNR: +%5.2f dB',decibels);
+output = decibels;
