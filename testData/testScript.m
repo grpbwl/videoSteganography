@@ -1,18 +1,21 @@
 %% Parameters
 load('format');
-carrier = loadFileYuv('bus_cif.yuv',format.cif(1),format.cif(2),1);
-seed = loadFileYuv('foreman_qcif.yuv',format.qcif(1),format.qcif(2),1);
+f = 5;
+bp = [1 2 4 5];
+carrierPath = 'bus_cif.yuv';
+seedPath = 'foreman_qcif.yuv';
+carrier = extractYuv(carrierPath,1,f,'cif');
+seed = extractYuv(seedPath,1,f,'qcif');
 carrierOutput = '_output.yuv';
 seedOutput = '_seed.yuv';
-f = 60;
-bp = [1 2 4 5];
+
 clear key;
 load('key');
 %% Embed the seed image.
 tic
-[s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',f,key,bp(4));
+[s,k] = embedSequence(carrierPath,seedPath,f,key,bp(3));
 toc
-saveFileYuv(s,strcat(int2str(bp(4)),carrierOutput),1,0);
+saveFileYuv(s,strcat(int2str(bp(3)),carrierOutput),1,0);
 % for i=1:size(bp,2)
 %     [s,k] = embedSequence('bus_cif.yuv','foreman_qcif.yuv',f,key,bp(i));
 %     saveFileYuv(s,strcat(int2str(bp(i)),carrierOutput),1,0);
